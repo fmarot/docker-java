@@ -15,7 +15,7 @@ public class HeapFiller {
 		listOfArguments.forEach(arg -> System.out.println("arg: " + arg));
 
 		List dummyCache = new ArrayList<>();
-		final int ONE_MEGA_BYTE = 1048576;	// = 1 Mb
+		final int ONE_MEGA_BYTE = 1048576;	// = 1 MB
 		int i = 0;
 		while (true) {
 			i++;

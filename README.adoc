@@ -1,3 +1,7 @@
+:toc: macro
+
+toc::[]
+
 = How to build
 
  mvn jib:dockerBuild
@@ -42,4 +46,13 @@ Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
 --------
 
 => allow java heap to use 100% of available memory (nearly 500Mb)
+
+= Conclusion
+
+From the above, we can conclude that with a java version correctly handling docker containers (>10), you can manage the memory by:
+
+* setting the max memory on the docker container itself
+* configuring the java memory NOT with hardcoded flags inside the container but using the JAVA_TOOL_OPTIONS at runtime
+* balancing the java heap usage VS the rest using *MaxRAMPercentage* option in JAVA_TOOL_OPTIONS
+
 
