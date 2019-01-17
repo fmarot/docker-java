@@ -1,0 +1,45 @@
+= How to build
+
+ mvn jib:dockerBuild
+
+= How to run with a memory limited container
+
+== default behavior
+
+Run on a container with memory limited to 500M:
+
+ docker run -m=500M docker-java
+
+result is:
+-----
+[...]
+116 free memory: 4Mb
+117 free memory: 3Mb
+118 free memory: 2Mb
+119 free memory: 1Mb
+120 free memory: 1Mb
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+        at HeapFiller.main(HeapFiller.java:22)
+-----
+=> demonstrate that Java heap (Xmx) is automatically mimited to 1/4 of available memory
+
+== overriding the max heap size
+
+We use the link: https://docs.oracle.com/javase/10/troubleshoot/environment-variables-and-system-properties.htm#GUID-BE6E7B7F-A4BE-45C0-9078-AA8A66754B97[JAVA_TOOL_OPTIONS] environment variable
+to pass the _MaxRAMPercentage_ option to the VM. When set to 100 it means the java heap will be able to occupy the whole memory.
+
+ docker run -m=500M -e JAVA_TOOL_OPTIONS=-XX:MaxRAMPercentage=100 docker-java
+
+result is:
+--------
+[...]
+478 free memory: 3Mb
+479 free memory: 2Mb
+480 free memory: 1Mb
+481 free memory: 1Mb
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+        at HeapFiller.main(HeapFiller.java:22)
+--------
+
+=> allow java heap to use 100% of available memory (nearly 500Mb)
+
